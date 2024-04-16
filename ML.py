@@ -1,9 +1,11 @@
+from sklearnex import patch_sklearn
+patch_sklearn()
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.datasets import fetch_openml
 from sklearn.decomposition import PCA
 from warnings import simplefilter
-
+import time
 
 # ignore all future warnings
 simplefilter(action='ignore', category=FutureWarning)
@@ -26,12 +28,19 @@ X.shape, y.shape
 #     plt.imshow(img, cmap='gray')
 # plt.show()
 
+start = time.time()
 #保留95%的方差，需多少特徵
-pca = PCA(n_components=0.95)
+pca = PCA(n_components=2)
 X_reduced = pca.fit_transform(X)	# 压缩
 X_recovered = pca.inverse_transform(X_reduced)
 print(pca.n_components_)
-
+print(time.time()-start)
+# for label in np.unique(y):
+#     plt.scatter(X_reduced[y == label, 0], X_reduced[y == label, 1], label=mnist['target'])
+# plt.title('2D PCA')
+# plt.xlabel('Principal Component 1')
+# plt.ylabel('Principal Component 2')
+# plt.show()
 
 #利用主要特徵還原影像
 figure = plt.figure(figsize=(10, 10))
